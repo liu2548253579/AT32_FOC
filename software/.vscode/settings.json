@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "foc_config.h": "c",
+        "peripherals_config.h": "c",
+        "array": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "at32_config.h": "c"
+    }
+}
