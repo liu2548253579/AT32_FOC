@@ -18,23 +18,6 @@
 
 typedef enum {FALSE = 0, TRUE = !FALSE} confirm_state;
 
-typedef struct 
-{
-float Angle_val;
-float Angle_val1;
-float Velocity_val;
-float Velocity_val1;
-float Current_val;
-float Current_val1;
-float Bat_val;
-float Key_val;
-float Angle_X;
-float Angle_Y;
-float Angle_Z;
-float Gyro_X;
-float Gyro_Y;
-float Gyro_Z;
-}SensorData;
 
 
 extern TwoWire Wire1;

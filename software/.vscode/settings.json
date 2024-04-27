@@ -9,6 +9,7 @@
         "vector": "cpp",
         "string_view": "cpp",
         "initializer_list": "cpp",
-        "at32_config.h": "c"
+        "at32_config.h": "c",
+        "*.tcc": "cpp"
     }
 }

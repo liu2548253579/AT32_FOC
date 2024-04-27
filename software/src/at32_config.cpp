@@ -28,7 +28,6 @@ CAN(PB8-RX PB9-TX)
 
 TwoWire Wire1 = TwoWire(); //D14-D15
 
-
 void at32_i2c_clock_config(void)
 {
 __HAL_RCC_I2C1_CLK_ENABLE();
@@ -77,14 +76,13 @@ void at32_board_init(void)
     Wire1.setClock(400000); //设置I2C时钟频率为400kHz
     Wire1.setSCL(PF6);Wire1.setSDA(PF7);Wire1.begin();//初始化I2C接口1
     Wire.setSCL(PB10);Wire.setSDA(PB11);Wire.begin();//初始化I2C接口2
-
     Serial.setRx(PB7);Serial.setTx(PB6);Serial.begin(115200);//初始化串口
 
     pinMode(BAT_PIN,INPUT);//电池电压测量
     pinMode(KEY_PIN,INPUT_PULLDOWN);//按键ADC
+    analogReadResolution(12);//设置ADC读取精度为12位
 
     pinMode(LED_PIN,OUTPUT);//初始化LED引脚
-    analogReadResolution(12);
     Serial.println("AT32_Board Init OK!");
     Serial.printf("Serial_OK!BaudRate:115200\r\nKEY(PA0)LED(PB1)\r\nBATTERY(PB0)\r\nMOTOR1(PA8 PA9 PA10)\r\nMOTOR2(PA1 PA2 PA3)\r\nI-SENSE1(PA6 PA7)\r\nI-SENSE2(PA4 PA5)\r\nIIC1(PF6-SCL PF7-SDA)-MPU-FLASH\r\nIIC2(PB10-SCL PB11-SDA)-OLED\r\nSWD(PA13-CLK PA14-DIO)\r\nUSART1(PB6-TX PB7-RX)\r\nCAN(PB8-RX PB9-TX)\r\n");
 }
