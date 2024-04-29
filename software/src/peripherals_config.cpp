@@ -20,7 +20,7 @@ void Get_All_Sensor_Data(SensorData *sensor_dat)
 {
     mpu6050.update();
     sensor_dat->Bat_val=at32_battery_voltage_read();
-    sensor_dat->Key_val=KEY_Read();
+    sensor_dat->Key_val=KEY_Read_Debounce();
     sensor_dat->Angle_val=FOC_M0_Angle();
     sensor_dat->Angle_val1=FOC_M1_Angle();
     sensor_dat->Velocity_val=FOC_M0_Velocity();

@@ -104,7 +104,7 @@ float at32_battery_voltage_read(void)
 
 uint8_t KEY_Read(void)
 {   
-    const uint8_t err_val=10;
+    const uint8_t err_val=30;
     uint8_t key_val=0;
     uint32_t adc_val;
     float key_voltage;
@@ -123,6 +123,29 @@ uint8_t KEY_Read(void)
 
     return key_val;
 }
+
+
+uint8_t KEY_Read_Debounce(void)
+{
+uint8_t temp;
+static uint8_t key_val_pre=0;
+uint8_t key_val=KEY_Read();
+
+if(key_val)//按键按下
+{
+    temp=0;
+}
+{//按键松开
+    if(key_val!=key_val_pre)//按键状态改变
+    {
+        temp=key_val_pre;
+    }
+}
+
+key_val_pre=key_val;
+return temp;
+}
+
 
 
 

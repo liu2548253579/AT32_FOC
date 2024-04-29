@@ -27,6 +27,7 @@ extern void at32_i2c_clock_config(void);
 extern void at32_board_init(void);
 extern float at32_battery_voltage_read(void);
 extern uint8_t KEY_Read(void);
+extern uint8_t KEY_Read_Debounce(void);
 
 #endif /* AT32_CONFIG_H */
 

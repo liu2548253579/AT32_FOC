@@ -17,10 +17,31 @@ void setup() {
   // Serial.println(eeprom.read(0x80));
   // Serial.println("data------------------------------");
 
-  // SHOW_FULLSCREEN("HOLD-ON");
+  // Menu_Show_3("HOLD-ON");
   // mpu6050.calcGyroOffsets(false);
 
-  SHOW_FULLSCREEN("LAN-FOC");
+  Menu_Show_1("ABCDEFGHIJKLMNOPQRSTU","ABCDEFGHIJKLMNOPQRSTU","ABCDEFGHIJKLMNOPQRSTU","ABCDEFGHIJKLMNOPQRSTU");
+
+while (1)
+{
+
+ShowMenu(&main_menu);
+
+Get_All_Sensor_Data(&sensor_data);
+
+if(sensor_data.Key_val==3){main_menu.Enable=!main_menu.Enable;}
+if(!main_menu.Enable)
+{
+    if(sensor_data.Key_val==1){main_menu.mode--;}
+    if(sensor_data.Key_val==2){main_menu.mode++;}
+}
+
+
+  /* code */
+}
+
+
+  Menu_Show_3("LAN-FOC");
   foc_init();        //FOC initialization
 
   timer_init();//定时器初始化
@@ -31,7 +52,7 @@ void setup() {
 
   Motion_Velocity_Init();
 
-  SHOW_FULLSCREEN("INIT-OK");
+  Menu_Show_3("INIT-OK");
   Serial.printf("INIT_OK\r\n");
 }
 
