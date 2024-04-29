@@ -1,6 +1,7 @@
 #include "at32_config.h"
 #include "foc_config.h"
 
+void Close_Output (void);
 void M0_setPwm(float Ua, float Ub, float Uc);
 void M1_setPwm(float Ua, float Ub, float Uc);
 void M0_setTorque(float Uq,float angle_el);
@@ -21,6 +22,9 @@ float FOC_M0_Angle();
 float FOC_M1_Angle();
 float FOC_M0_Current();
 float FOC_M1_Current();
+float FOC_M0_Phase_Current(char phase);
+float FOC_M1_Phase_Current(char phase);
+
 //PID
 void FOC_M0_SET_ANGLE_PID(float P,float I,float D,float ramp,float limit);
 void FOC_M0_SET_VEL_PID(float P,float I,float D,float ramp,float limit);

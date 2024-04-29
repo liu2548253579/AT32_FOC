@@ -18,15 +18,16 @@ void peripherals_init(void)
 
 void Get_All_Sensor_Data(SensorData *sensor_dat)
 {
-    mpu6050.update();
     sensor_dat->Bat_val=at32_battery_voltage_read();
-    sensor_dat->Key_val=KEY_Read_Debounce();
+    uint8_t key_val=KEY_Read_Debounce();if(key_val){sensor_dat->Key_val=key_val;}
+    runFOC();
     sensor_dat->Angle_val=FOC_M0_Angle();
     sensor_dat->Angle_val1=FOC_M1_Angle();
     sensor_dat->Velocity_val=FOC_M0_Velocity();
     sensor_dat->Velocity_val1=FOC_M1_Velocity();
     sensor_dat->Current_val=FOC_M0_Current();
     sensor_dat->Current_val1=FOC_M1_Current();
+    mpu6050.update();
     sensor_dat->Angle_X=mpu6050.getAngleX();
     sensor_dat->Angle_Y=mpu6050.getAngleY();
     sensor_dat->Angle_Z=mpu6050.getAngleZ();
@@ -34,6 +35,36 @@ void Get_All_Sensor_Data(SensorData *sensor_dat)
     sensor_dat->Gyro_Y=mpu6050.getGyroY();
     sensor_dat->Gyro_Z=mpu6050.getGyroZ();
 }
+
+
+void Get_Analog_Data(SensorData *sensor_dat)
+{
+    sensor_dat->Bat_val=at32_battery_voltage_read();
+    uint8_t key_val=KEY_Read_Debounce();if(key_val){sensor_dat->Key_val=key_val;}
+}
+
+
+void Get_Mpu6050_Data(SensorData *sensor_dat)
+{
+    mpu6050.update();
+    sensor_dat->Angle_X=mpu6050.getAngleX();
+    sensor_dat->Angle_Y=mpu6050.getAngleY();
+    sensor_dat->Angle_Z=mpu6050.getAngleZ();
+    sensor_dat->Gyro_X=mpu6050.getGyroX();
+    sensor_dat->Gyro_Y=mpu6050.getGyroY();
+    sensor_dat->Gyro_Z=mpu6050.getGyroZ();
+}
+
+void Get_Foc_Data(SensorData *sensor_dat)
+{   
+    sensor_dat->Angle_val=FOC_M0_Angle();
+    sensor_dat->Angle_val1=FOC_M1_Angle();
+    sensor_dat->Velocity_val=FOC_M0_Velocity();
+    sensor_dat->Velocity_val1=FOC_M1_Velocity();
+    sensor_dat->Current_val=FOC_M0_Current();
+    sensor_dat->Current_val1=FOC_M1_Current();
+}
+
 
 void Serial_Print_All_Data(SensorData *sensor_dat)
 {

@@ -1,7 +1,8 @@
 #include "interrupt.h"
+#include "peripherals_config.h"
 
 
-HardwareTimer timer(TIM3);
+HardwareTimer timer(TIM4);
 
 int time_1ms,time_10ms,time_100ms;
 
@@ -9,6 +10,7 @@ void OnTimer3Interrupt() {
     time_100ms++;
     time_10ms++;
     time_1ms++;
+    // Get_Foc_Data(&sensor_data);
 }
 
 void timer_init(void) 

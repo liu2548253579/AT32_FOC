@@ -138,7 +138,11 @@ float _normalizeAngle(float angle) {
 }
 
 
-
+void Close_Output (void)
+{
+  M0_setPwm(0,0,0);
+  M1_setPwm(0,0,0);
+}
 
 
 // 设置PWM到控制器输出
@@ -417,6 +421,27 @@ float FOC_M1_Current() {
   float I_q_M1_flit = M1_Curr_Flt(I_q_M1_ori);
   return I_q_M1_flit;
 }
+
+
+float FOC_M0_Phase_Current(char phase) 
+{
+  float temp;
+  if(phase=='a'){temp = CS_M0.current_a;}
+  else if(phase=='b'){temp = CS_M0.current_b;}
+  else if(phase=='c'){temp = CS_M0.current_c;}
+  return temp;
+}
+
+float FOC_M1_Phase_Current(char phase) 
+{
+  float temp;
+  if(phase=='a'){temp = CS_M1.current_a;}
+  else if(phase=='b'){temp = CS_M1.current_b;}
+  else if(phase=='c'){temp = CS_M1.current_c;}
+  return temp;
+}
+
+
 
 //=========================电流读取=========================
 //有滤波

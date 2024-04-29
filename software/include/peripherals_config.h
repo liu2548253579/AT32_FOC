@@ -7,7 +7,6 @@
 #include <MPU6050_tockn.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-
 #include "FOC.h"
 
 #define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3C for 128x32
@@ -39,6 +38,9 @@ extern SensorData sensor_data;
 
 void peripherals_init(void);
 void Get_All_Sensor_Data(SensorData *sensor_dat);
+void Get_Foc_Data(SensorData *sensor_dat);
+void Get_Mpu6050_Data(SensorData *sensor_dat);
+void Get_Analog_Data(SensorData *sensor_dat);
 void Serial_Print_All_Data(SensorData *sensor_dat);
 
 
