@@ -4,6 +4,15 @@
 
 #define _2PI 6.28318530718f
 
+void Sensor_AS5600::Clear_Data() {
+angle_prev=0; // 最后一次调用 getSensorAngle() 的输出结果，用于得到完整的圈数和速度
+angle_prev_ts=0; // 上次调用 getAngle 的时间戳
+vel_angle_prev=0; // 最后一次调用 getVelocity 时的角度
+vel_angle_prev_ts=0; // 最后速度计算时间戳
+full_rotations=0; // 总圈数计数
+vel_full_rotations=0; //用于速度计算的先前完整旋转圈数
+}
+
 
 
 // AS5600 相关

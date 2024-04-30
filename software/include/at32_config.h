@@ -12,7 +12,7 @@
 #define I2C1_GMUX_0011                   IOMUX_MAKE_VALUE(0x28, 4, 4, 0x03)  /*!< i2c1_scl(pf6), i2c1_sda(pf7) */
 #define IOMUX_BASE                       (APB2PERIPH_BASE + 0x0000)
 
-#define LED_PIN                          PB1
+#define LED_PIN                          PB_1
 #define KEY_PIN                          PA0
 #define BAT_PIN                          PB0
 

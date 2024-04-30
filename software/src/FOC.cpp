@@ -553,7 +553,10 @@ void FOC_M1_set_Force_Angle(float Target)  //力位闭环
   FOC_M1_setTorque(FOC_M1_ANGLE_PID((Target - FOC_M1_Angle()) * 180 / PI));  //改进后
 }
 
-
+void Clear_FOC_Data() {
+  S0.Clear_Data();
+  S1.Clear_Data();
+}
 
 
 

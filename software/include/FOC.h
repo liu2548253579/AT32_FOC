@@ -47,5 +47,6 @@ void FOC_M1_set_Force_Angle(float Target);
 void FOC_M0_setTorque(float Target);
 void FOC_M1_setTorque(float Target);   
 //runFOC 循环函数
+void Clear_FOC_Data();
 void runFOC();
 //测试函数

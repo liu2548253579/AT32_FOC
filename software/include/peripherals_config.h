@@ -24,6 +24,7 @@ float Velocity_val1;
 float Current_val;
 float Current_val1;
 float Bat_val;
+float Bat_val_init;
 float Key_val;
 float Angle_X;
 float Angle_Y;
@@ -41,6 +42,7 @@ void Get_All_Sensor_Data(SensorData *sensor_dat);
 void Get_Foc_Data(SensorData *sensor_dat);
 void Get_Mpu6050_Data(SensorData *sensor_dat);
 void Get_Analog_Data(SensorData *sensor_dat);
+void Get_Initial_Voltage(SensorData *sensor_dat,float min_voltage);
 void Serial_Print_All_Data(SensorData *sensor_dat);
 
 

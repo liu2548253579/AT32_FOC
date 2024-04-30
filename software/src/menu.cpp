@@ -4,15 +4,16 @@ MENU_ITEM main_menu;
 
 void ShowMenu(MENU_ITEM *menu)
 {static int8_t mode_Pre=4,enable_Pre=4;
+static int Velocity_Pre=0,Angle_Pre=0;
 
 if(menu->Enable)
 {
-    if(mode_Pre!=menu->mode||enable_Pre!=menu->Enable)
+    if(mode_Pre!=menu->mode||enable_Pre!=menu->Enable||Velocity_Pre!=menu->Velocity||Angle_Pre!=menu->Angle)
     {
         if(menu->mode==0){Menu_Show_3("Banlance");}//Banlance
-        if(menu->mode==1){Menu_Show_3("Velocity");}//Velocity
+        if(menu->mode==1){Menu_Show_data("Velocity",menu->Velocity);}//Velocity
         if(menu->mode==2){Menu_Show_3("Sync");}//Sync
-        if(menu->mode==3){Menu_Show_3("Angle");}//Angle
+        if(menu->mode==3){Menu_Show_data("Angle",menu->Angle);}//Angle
         if(menu->mode==4){Menu_Show_3("Config");}//Config
         if(menu->mode==5){Menu_Show_3("Info");}//Info
     }
@@ -31,6 +32,9 @@ else{
 
 mode_Pre=menu->mode;
 enable_Pre=menu->Enable;
+Velocity_Pre=menu->Velocity;
+Angle_Pre=menu->Angle;
+
 if(menu->mode<0){menu->mode=5;}
 if(menu->mode>=6){menu->mode=0;}   
 }
@@ -82,5 +86,20 @@ void Menu_Show_3(const char *str)
     display.setTextColor(SSD1306_WHITE);
     display.setCursor(0, 4);
     display.print(str);
+    display.display();
+}
+
+
+
+void Menu_Show_data(const char *str,int data)
+{//Only show 10 characters of each string
+    display.clearDisplay();
+    display.setTextSize(2);
+    display.setTextColor(SSD1306_WHITE);
+    display.setCursor(0, 0);
+    display.print(str);
+    display.setCursor(0, 16);
+    display.print("Val:");
+    display.print(data);
     display.display();
 }

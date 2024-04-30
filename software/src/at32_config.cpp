@@ -80,8 +80,9 @@ void Foc_Pin_Init(void)
 
 
 
+
 void at32_board_init(void)
-{
+{   
     at32_i2c_clock_config();
     gpio_pin_remap_config(I2C1_GMUX_0011,TRUE);
     
@@ -100,7 +101,7 @@ void at32_board_init(void)
     pinMode(LED_PIN,OUTPUT);//初始化LED引脚
     digitalWrite(LED_PIN,LOW);//LED亮
     
-
+    
 
     Serial.println("AT32_Board Init OK!");
     Serial.printf("Serial_OK!BaudRate:115200\r\nKEY(PA0)LED(PB1)\r\nBATTERY(PB0)\r\nMOTOR1(PA8 PA9 PA10)\r\nMOTOR2(PA1 PA2 PA3)\r\nI-SENSE1(PA6 PA7)\r\nI-SENSE2(PA4 PA5)\r\nIIC1(PF6-SCL PF7-SDA)-MPU-FLASH\r\nIIC2(PB10-SCL PB11-SDA)-OLED\r\nSWD(PA13-CLK PA14-DIO)\r\nUSART1(PB6-TX PB7-RX)\r\nCAN(PB8-RX PB9-TX)\r\n");

@@ -6,12 +6,12 @@
 #include "motion.h"
 #include "interrupt.h"
 
-
-
 void setup() {
   at32_board_init(); //CLOCK IO UART IIC initialization
   peripherals_init();//MPU6050 SSD1306 AT24C02
 
+  Menu_Show_3("LOW-VOL");
+  Get_Initial_Voltage(&sensor_data,6.7f);
   // eeprom.update(0x80,0x02);
   // Serial.println("data------------------------------");
   // Serial.println(eeprom.read(0x80));
@@ -21,9 +21,9 @@ void setup() {
   mpu6050.calcGyroOffsets(false);
 
 
-
+  // I2C1_EV_IRQn
   Menu_Show_3("LAN-FOC");
-  foc_init();        //FOC initialization
+  foc_init(sensor_data.Bat_val_init);        //FOC initialization
 
 
 
@@ -35,7 +35,6 @@ void setup() {
   Menu_Show_3("INIT-OK");
   Serial.printf("INIT_OK\r\n");
 
-
   timer_init();//定时器初始化
 }
 
@@ -43,35 +42,36 @@ void setup() {
 
 void loop() {
 
+    runFOC();
 
-    if(main_menu.Enable)
-    {
-      runFOC();
-      if(main_menu.mode==0){Close_Output();}//Banlance
-      if(main_menu.mode==1){Motion_Set_Velocity_Both(Rpm_to_Rad(serial_motor_target()));}
-      if(main_menu.mode==2){Motion_Sync();}//Sync
-      if(main_menu.mode==3){Motion_Set_Angle_Both(Angle_to_Rad(serial_motor_target()));}//Angle
-      if(main_menu.mode==4){Close_Output();}//Config
-      if(main_menu.mode==5){Close_Output();}//Info
-    }
-    else
-    {
-      Close_Output();
-    }
 
 
     if(time_1ms>=10)//1ms执行一次
     {
       time_1ms=0; 
-      serialReceiveUserCommand();
+      if(main_menu.Enable)
+      {
+          if(main_menu.mode==0){Close_Output();}//Banlance
+          if(main_menu.mode==1){Motion_Set_Velocity_Both(Rpm_to_Rad(main_menu.Velocity));}//Velocity
+          if(main_menu.mode==2){Motion_Sync();}//Sync
+          if(main_menu.mode==3){Motion_Set_Angle_Both(Angle_to_Rad(main_menu.Angle));}//Angle
+          if(main_menu.mode==4){Close_Output();}//Config
+          if(main_menu.mode==5){Close_Output();}//Info
+      }
+      else
+      {
+          Clear_FOC_Data();
+          Close_Output();
+      }
     }
 
     if(time_10ms>=100)//10ms执行一次
     {
       time_10ms=0;
       Get_Foc_Data(&sensor_data);
-      // Get_Mpu6050_Data(&sensor_data);
       // Serial_Print_All_Data(&sensor_data);
+      // Serial_Print_All_Data(&sensor_data);
+      // Get_Mpu6050_Data(&sensor_data);
     }
 
 
@@ -79,14 +79,36 @@ void loop() {
     {
       time_100ms=0;
       Get_Analog_Data(&sensor_data);
+
+      if(sensor_data.Bat_val<6.7f)//低电量关闭输出
+      {
+        main_menu.Enable=0;
+        Menu_Show_3("LOW-VOL");//显示低电量
+        Close_Output();
+      }
+
+
       if(sensor_data.Key_val==3){sensor_data.Key_val=0;main_menu.Enable=!main_menu.Enable;}
       if(!main_menu.Enable)
       {
           if(sensor_data.Key_val==1){sensor_data.Key_val=0;main_menu.mode--;}
           if(sensor_data.Key_val==2){sensor_data.Key_val=0;main_menu.mode++;}
       }
+      else{
+          if(main_menu.mode==1){//Velocity
+            if(sensor_data.Key_val==1){sensor_data.Key_val=0;main_menu.Velocity+=50;}
+            if(sensor_data.Key_val==2){sensor_data.Key_val=0;main_menu.Velocity-=50;}
+            if(main_menu.Velocity<=-500){main_menu.Velocity=-500;}
+            if(main_menu.Velocity>=500){main_menu.Velocity=500;}
+          }
+          if(main_menu.mode==3){//Angle
+            if(sensor_data.Key_val==1){sensor_data.Key_val=0;main_menu.Angle+=30;}
+            if(sensor_data.Key_val==2){sensor_data.Key_val=0;main_menu.Angle-=30;}
+          }
+      }
       ShowMenu(&main_menu);
-      digitalToggle(LED_PIN);
+      serialReceiveUserCommand();
+      digitalToggleFast(LED_PIN);
     }
 }
 

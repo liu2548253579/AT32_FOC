@@ -36,6 +36,21 @@ void Get_All_Sensor_Data(SensorData *sensor_dat)
     sensor_dat->Gyro_Z=mpu6050.getGyroZ();
 }
 
+void Get_Initial_Voltage(SensorData *sensor_dat,float min_voltage)
+{
+    float Bat_val=0;
+    while(at32_battery_voltage_read()<min_voltage){Serial.println("Waiting for 5V above voltage");delay(100);}
+    for(int i=0;i<10;i++)
+    {
+        Bat_val+=at32_battery_voltage_read();delay(10);
+    }
+    sensor_dat->Bat_val_init=Bat_val*0.1f;
+    Serial.print("Initial Battery Voltage:");
+    Serial.print(sensor_dat->Bat_val_init);
+    Serial.print("\r\n");
+}
+
+
 
 void Get_Analog_Data(SensorData *sensor_dat)
 {
@@ -69,27 +84,27 @@ void Get_Foc_Data(SensorData *sensor_dat)
 void Serial_Print_All_Data(SensorData *sensor_dat)
 {
     Serial.print("Data:");
-    Serial.print(sensor_dat->Angle_val);//L0
-    Serial.print(",");
-    Serial.print(sensor_dat->Angle_val1);//L1
-    Serial.print(",");
-    Serial.print(sensor_dat->Velocity_val);//L2
-    Serial.print(",");
-    Serial.print(sensor_dat->Velocity_val1);//L3
-    Serial.print(",");
+    // Serial.print(sensor_dat->Angle_val);//L0
+    // Serial.print(",");
+    // Serial.print(sensor_dat->Angle_val1);//L1
+    // Serial.print(",");
+    // Serial.print(sensor_dat->Velocity_val);//L2
+    // Serial.print(",");
+    // Serial.print(sensor_dat->Velocity_val1);//L3
+    // Serial.print(",");
     Serial.print(sensor_dat->Current_val);//L4
     Serial.print(",");
     Serial.print(sensor_dat->Current_val1);//L5
     Serial.print(",");
     Serial.print(sensor_dat->Bat_val);//L6
-    Serial.print(",");
-    Serial.print(sensor_dat->Key_val);//L7
-    Serial.print(",");
-    Serial.print(sensor_dat->Angle_X);//L8
-    Serial.print(",");
-    Serial.print(sensor_dat->Angle_Y);//L9
-    Serial.print(",");
-    Serial.print(sensor_dat->Angle_Z);//L10
+    // Serial.print(",");
+    // Serial.print(sensor_dat->Key_val);//L7
+    // Serial.print(",");
+    // Serial.print(sensor_dat->Angle_X);//L8
+    // Serial.print(",");
+    // Serial.print(sensor_dat->Angle_Y);//L9
+    // Serial.print(",");
+    // Serial.print(sensor_dat->Angle_Z);//L10
     Serial.print("\r\n");
 }
 

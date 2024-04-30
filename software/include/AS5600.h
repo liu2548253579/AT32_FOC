@@ -5,6 +5,7 @@ class Sensor_AS5600
 {
   public:
     Sensor_AS5600(int Mot_Num);
+    void Clear_Data();
     void Sensor_init(TwoWire* _wire = &Wire);
     void Sensor_update();
     float getAngle();
