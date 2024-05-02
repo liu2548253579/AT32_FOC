@@ -1,4 +1,6 @@
 #include "peripherals_config.h"
+#include "menu.h"
+#include "motion.h"
 
 SensorData sensor_data;
 
@@ -83,20 +85,30 @@ void Get_Foc_Data(SensorData *sensor_dat)
 
 void Serial_Print_All_Data(SensorData *sensor_dat)
 {
+
+
+if(main_menu.mode==3){
     Serial.print("Data:");
-    // Serial.print(sensor_dat->Angle_val);//L0
-    // Serial.print(",");
-    // Serial.print(sensor_dat->Angle_val1);//L1
-    // Serial.print(",");
-    // Serial.print(sensor_dat->Velocity_val);//L2
-    // Serial.print(",");
-    // Serial.print(sensor_dat->Velocity_val1);//L3
-    // Serial.print(",");
-    Serial.print(sensor_dat->Current_val);//L4
+    Serial.print(Rad_to_Angle(sensor_dat->Angle_val));//L0
     Serial.print(",");
-    Serial.print(sensor_dat->Current_val1);//L5
+    Serial.print(Rad_to_Angle(sensor_dat->Angle_val1));//L1
+    Serial.print("\r\n");
+}
+
+if(main_menu.mode==1){
+
+    Serial.print("Data:");
+    Serial.print(Rad_to_Rpm(sensor_dat->Velocity_val));//L2
     Serial.print(",");
-    Serial.print(sensor_dat->Bat_val);//L6
+    Serial.print(Rad_to_Rpm(sensor_dat->Velocity_val1));//L3
+    Serial.print("\r\n");
+
+}
+    // Serial.print(sensor_dat->Current_val);//L4
+    // Serial.print(",");
+    // Serial.print(sensor_dat->Current_val1);//L5
+    // Serial.print(",");
+    // Serial.print(sensor_dat->Bat_val);//L6
     // Serial.print(",");
     // Serial.print(sensor_dat->Key_val);//L7
     // Serial.print(",");
@@ -105,18 +117,7 @@ void Serial_Print_All_Data(SensorData *sensor_dat)
     // Serial.print(sensor_dat->Angle_Y);//L9
     // Serial.print(",");
     // Serial.print(sensor_dat->Angle_Z);//L10
-    Serial.print("\r\n");
+
 }
-
-
-
-
-
-
-
-
-
-
-
 
 

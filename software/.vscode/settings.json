@@ -11,6 +11,13 @@
         "initializer_list": "cpp",
         "at32_config.h": "c",
         "*.tcc": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "functional": "cpp",
+        "ostream": "cpp",
+        "exception": "cpp",
+        "memory_resource": "cpp",
+        "iosfwd": "cpp",
+        "new": "cpp",
+        "streambuf": "cpp"
     }
 }

@@ -87,9 +87,20 @@ void at32_board_init(void)
     gpio_pin_remap_config(I2C1_GMUX_0011,TRUE);
     
     Foc_Pin_Init();
-
+    // Wire.setTimeout(1000); //设置I2C超时时间为1000ms
+    // Wire1.setTimeout(1000); //设置I2C超时时间为1000ms
     Wire.setClock(400000); //设置I2C时钟频率为400kHz
     Wire1.setClock(400000); //设置I2C时钟频率为400kHz
+
+    // I2C_InitTypeDef I2C_InitStructure;
+    // I2C_InitStructure.ClockSpeed=400000;
+
+    // I2C_InitStructure.OwnAddress1=0x00;
+    // I2C_InitStructure.AddressingMode=I2C_ADDRESSINGMODE_7BIT;
+    // I2C_InitStructure.DualAddressMode=I2C_DUALADDRESS_DISABLED;
+
+
+
     Wire1.setSCL(PF6);Wire1.setSDA(PF7);Wire1.begin();//初始化I2C接口1
     Wire.setSCL(PB10);Wire.setSDA(PB11);Wire.begin();//初始化I2C接口2
     Serial.setRx(PB7);Serial.setTx(PB6);Serial.begin(115200);//初始化串口
@@ -101,7 +112,7 @@ void at32_board_init(void)
     pinMode(LED_PIN,OUTPUT);//初始化LED引脚
     digitalWrite(LED_PIN,LOW);//LED亮
     
-    
+
 
     Serial.println("AT32_Board Init OK!");
     Serial.printf("Serial_OK!BaudRate:115200\r\nKEY(PA0)LED(PB1)\r\nBATTERY(PB0)\r\nMOTOR1(PA8 PA9 PA10)\r\nMOTOR2(PA1 PA2 PA3)\r\nI-SENSE1(PA6 PA7)\r\nI-SENSE2(PA4 PA5)\r\nIIC1(PF6-SCL PF7-SDA)-MPU-FLASH\r\nIIC2(PB10-SCL PB11-SDA)-OLED\r\nSWD(PA13-CLK PA14-DIO)\r\nUSART1(PB6-TX PB7-RX)\r\nCAN(PB8-RX PB9-TX)\r\n");
