@@ -46,8 +46,8 @@ void pidcalculate(PidObject* pid)
     pid->last_error = error;  //更新上次的误差
 
     //  此处进行输出限幅(可选)
-    if(pid->out>pid->out_limit){pid->out=pid->out_limit;}
-    if(pid->out<-pid->out_limit){pid->out=-pid->out_limit;}
+    // if(pid->out>pid->out_limit){pid->out=pid->out_limit;}
+    // if(pid->out<-pid->out_limit){pid->out=-pid->out_limit;}
 }
 
 
@@ -69,16 +69,15 @@ void pidcalculate_weizhi(PidObject* pid)
 
 
 
-float Motion_Balance_Angle(SensorData *sensor_data)
+float Motion_Balance_Angle(SensorData *sensor_data,float desired_angle)
 {
-pid_Angle_X.desired = 1.0f;
+pid_Angle_X.desired = (0.6f+desired_angle);
 pid_Angle_X.measured = sensor_data->Angle_X;
 pid_Angle_X.integral = 0;
 pid_Angle_X.integral_limit = 100;
 pid_Angle_X.ti = 0;
 pid_Angle_X.dt = 0.01f;//10ms
-pid_Angle_X.kp = 2.4f;//0.1-0.4
-pid_Angle_X.out_limit = 400;
+pid_Angle_X.kp = 1.4f;//0.1-0.4   1.5最大
 pidcalculate(&pid_Angle_X);
 
 pid_Gyro_X.desired = 0.0f;
@@ -86,35 +85,58 @@ pid_Gyro_X.measured = sensor_data->Gyro_X;
 pid_Gyro_X.integral = 0;
 pid_Gyro_X.ti = 0;
 pid_Gyro_X.dt = 0.01f;//10ms
-pid_Gyro_X.kp = 0.08f;// 0.3 0.02     0.4 0.005   
-pid_Gyro_X.out_limit = 400;
+pid_Gyro_X.kp = 0.02f;// 0.3 0.02     0.4 0.005     1.6 0.02    1.6 0.07  1.2 0.015
 pidcalculate(&pid_Gyro_X);
 
-return pid_Angle_X.out + pid_Gyro_X.out;
+
+float angle_out = pid_Angle_X.out + pid_Gyro_X.out;
+const float angle_limit = 300.0f;
+if(angle_out>angle_limit){angle_out=angle_limit;}
+if(angle_out<-angle_limit){angle_out=-angle_limit;}
+
+return angle_out;
 }
 
-float Motion_Balance_Velocity(SensorData *sensor_data,float desired_velocity)
+float Motion_Balance_Velocity(float measured_velocity,float desired_velocity)
 {
-    pid_Velocity_X.desired = 0.0f;
-    pid_Velocity_X.measured = (sensor_data->Velocity_val+sensor_data->Velocity_val1);
+    pid_Velocity_X.desired = desired_velocity;
+    pid_Velocity_X.measured = -measured_velocity;
     pid_Velocity_X.integral = 0;
     pid_Velocity_X.integral_limit = 200;
-    pid_Velocity_X.kp = 1.12f; //0.5-1.5
-    pid_Velocity_X.ti = pid_Velocity_X.kp/200.0f;
-    pid_Velocity_X.out_limit = 400;
+    pid_Velocity_X.kp = 1.4f; //0.5-1.5
+    pid_Velocity_X.ti = 0;//pid_Velocity_X.kp/200.0f
     pidcalculate_weizhi(&pid_Velocity_X);
     return pid_Velocity_X.out;
 }
+
+void Banlance_Set_Velocity(uint8_t motor,int16_t velocity)
+{
+//设置速度环PID
+FOC_M0_SET_VEL_PID(0.005f,0.00,0,0,200);
+FOC_M0_SET_CURRENT_PID(0.5f,10,0,0);
+FOC_M1_SET_VEL_PID(0.005f,0.00f,0,0,200);
+FOC_M1_SET_CURRENT_PID(0.5f,10,0,0);
+if (motor==0)
+{
+    FOC_M0_setVelocity(velocity);
+}
+else
+{
+    FOC_M1_setVelocity(velocity);
+}
+}
+
+
 
 
 
 void Motion_Set_Velocity_Both(int16_t velocity)
 {
 //设置速度环PID
-FOC_M0_SET_VEL_PID(0.005f,0.00f,0,0,200);
-FOC_M0_SET_CURRENT_PID(0.5f,10,0,0);
+FOC_M0_SET_VEL_PID(0.005f,0.00,0,0,200);
+FOC_M0_SET_CURRENT_PID(0.5f,50,0,0);//10
 FOC_M1_SET_VEL_PID(0.005f,0.00f,0,0,200);
-FOC_M1_SET_CURRENT_PID(0.5f,10,0,0);
+FOC_M1_SET_CURRENT_PID(0.5f,50,0,0);//10
 FOC_M0_setVelocity(velocity);
 FOC_M1_setVelocity(velocity);
 }

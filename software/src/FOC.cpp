@@ -9,6 +9,7 @@
 float voltage_power_supply;
 // float Ualpha,Ubeta=0,Ua=0,Ub=0,Uc=0;
 #define _PI 3.14159265359f
+#define _2PI 6.28318530718f
 #define _PI_2 1.57079632679f
 #define _PI_3 1.0471975512f
 #define _3PI_2 4.71238898038f
@@ -129,8 +130,8 @@ float FOC_M1_ANGLE_PID(float error) {
 
 // 归一化角度到 [0,2PI]
 float _normalizeAngle(float angle) {
-  float a = fmod(angle, 2 * PI);  //取余运算可以用于归一化，列出特殊值例子算便知
-  return a >= 0 ? a : (a + 2 * PI);
+  float a = fmod(angle, _2PI);  //取余运算可以用于归一化，列出特殊值例子算便知
+  return a >= 0 ? a : (a + _2PI);
   //三目运算符。格式：condition ? expr1 : expr2
   //其中，condition 是要求值的条件表达式，如果条件成立，则返回 expr1 的值，否则返回 expr2 的值。可以将三目运算符视为 if-else 语句的简化形式。
   //fmod 函数的余数的符号与除数相同。因此，当 angle 的值为负数时，余数的符号将与 _2PI 的符号相反。也就是说，如果 angle 的值小于 0 且 _2PI 的值为正数，则 fmod(angle, _2PI) 的余数将为负数。
@@ -186,8 +187,8 @@ void M1_setPwm(float Ua, float Ub, float Uc) {
 //   float Ud = 0;
 //   angle_el = _normalizeAngle(angle_el);
 //   // 帕克逆变换
-//   float Ualpha = -Uq * sin(angle_el);
-//   float Ubeta = Uq * cos(angle_el);
+//   float Ualpha = -Uq * sinf(angle_el);
+//   float Ubeta = Uq * cosf(angle_el);
 
 //   // 克拉克逆变换
 //   float Ua = Ualpha + voltage_power_supply / 2;
@@ -202,8 +203,8 @@ void M1_setPwm(float Ua, float Ub, float Uc) {
 //   float Ud = 0;
 //   angle_el = _normalizeAngle(angle_el);
 //   // 帕克逆变换
-//   float Ualpha = -Uq * sin(angle_el);
-//   float Ubeta = Uq * cos(angle_el);
+//   float Ualpha = -Uq * sinf(angle_el);
+//   float Ubeta = Uq * cosf(angle_el);
 
 //   // 克拉克逆变换
 //   float Ua = Ualpha + voltage_power_supply / 2;
@@ -221,8 +222,8 @@ void M0_setTorque(float Uq, float angle_el)
   angle_el = _normalizeAngle(angle_el + _PI_2);
   int sector = floor(angle_el / _PI_3) + 1;
   // calculate the duty cycles
-  float T1 = _SQRT3 * sin(sector * _PI_3 - angle_el) * Uq / voltage_power_supply;
-  float T2 = _SQRT3 * sin(angle_el - (sector - 1.0) * _PI_3) * Uq / voltage_power_supply;
+  float T1 = _SQRT3 * sinf(sector * _PI_3 - angle_el) * Uq / voltage_power_supply;
+  float T2 = _SQRT3 * sinf(angle_el - (sector - 1.0) * _PI_3) * Uq / voltage_power_supply;
   float T0 = 1 - T1 - T2;
 
   float Ta, Tb, Tc;
@@ -281,8 +282,8 @@ void M1_setTorque(float Uq, float angle_el)
   angle_el = _normalizeAngle(angle_el + _PI_2);
   int sector = floor(angle_el / _PI_3) + 1;
   // calculate the duty cycles
-  float T1 = _SQRT3 * sin(sector * _PI_3 - angle_el) * Uq / voltage_power_supply;
-  float T2 = _SQRT3 * sin(angle_el - (sector - 1.0) * _PI_3) * Uq / voltage_power_supply;
+  float T1 = _SQRT3 * sinf(sector * _PI_3 - angle_el) * Uq / voltage_power_supply;
+  float T2 = _SQRT3 * sinf(angle_el - (sector - 1.0) * _PI_3) * Uq / voltage_power_supply;
   float T0 = 1 - T1 - T2;
 
   float Ta, Tb, Tc;
@@ -404,8 +405,8 @@ float cal_Iq_Id(float current_a, float current_b, float angle_el) {
   float I_alpha = current_a;
   float I_beta = _1_SQRT3 * current_a + _2_SQRT3 * current_b;
 
-  float ct = cos(angle_el);
-  float st = sin(angle_el);
+  float ct = cosf(angle_el);
+  float st = sinf(angle_el);
   //float I_d = I_alpha * ct + I_beta * st;
   float I_q = I_beta * ct - I_alpha * st;
   return I_q;

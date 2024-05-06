@@ -87,20 +87,9 @@ void at32_board_init(void)
     gpio_pin_remap_config(I2C1_GMUX_0011,TRUE);
     
     Foc_Pin_Init();
-    // Wire.setTimeout(1000); //设置I2C超时时间为1000ms
-    // Wire1.setTimeout(1000); //设置I2C超时时间为1000ms
+
     Wire.setClock(400000); //设置I2C时钟频率为400kHz
     Wire1.setClock(400000); //设置I2C时钟频率为400kHz
-
-    // I2C_InitTypeDef I2C_InitStructure;
-    // I2C_InitStructure.ClockSpeed=400000;
-
-    // I2C_InitStructure.OwnAddress1=0x00;
-    // I2C_InitStructure.AddressingMode=I2C_ADDRESSINGMODE_7BIT;
-    // I2C_InitStructure.DualAddressMode=I2C_DUALADDRESS_DISABLED;
-
-
-
     Wire1.setSCL(PF6);Wire1.setSDA(PF7);Wire1.begin();//初始化I2C接口1
     Wire.setSCL(PB10);Wire.setSDA(PB11);Wire.begin();//初始化I2C接口2
     Serial.setRx(PB7);Serial.setTx(PB6);Serial.begin(115200);//初始化串口

@@ -6,15 +6,14 @@
 HardwareTimer timer_task(TIM3);
 
 
-int time_1ms,time_10ms,time_100ms;
+int time_1ms,time_10ms,time_200ms;
 
 
 void OnTimer3Interrupt() {
 	// timer_task.pause();
-        time_100ms++;
+        time_200ms++;
         time_10ms++;
         time_1ms++;
-
 	// timer_task.resume();
 }
 

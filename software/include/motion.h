@@ -26,11 +26,13 @@ void Motion_Follow(uint8_t motor);
 void Motion_Sync(void);
 void Motion_Set_Velocity_Both(int16_t velocity);
 void Motion_Set_Velocity(uint8_t motor,int16_t velocity);
+
+//直立模式
 void pidcalculate(PidObject* pid);
 void pidcalculate_weizhi(PidObject* pid);
-float Motion_Balance_Angle(SensorData *sensor_data);
-float Motion_Balance_Velocity(SensorData *sensor_data,float desired_velocity);
-
+float Motion_Balance_Angle(SensorData *sensor_data,float desired_angle);
+float Motion_Balance_Velocity(float measured_velocity,float desired_velocity);
+void Banlance_Set_Velocity(uint8_t motor,int16_t velocity);
 
 
 

@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 
-extern int time_1ms, time_10ms, time_100ms;
+extern int time_1ms, time_10ms, time_200ms;
 
 void timer_init(void);
 

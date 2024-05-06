@@ -78,8 +78,8 @@ void Get_Foc_Data(SensorData *sensor_dat)
     sensor_dat->Angle_val1=FOC_M1_Angle();
     sensor_dat->Velocity_val=FOC_M0_Velocity();
     sensor_dat->Velocity_val1=FOC_M1_Velocity();
-    sensor_dat->Current_val=FOC_M0_Current();
-    sensor_dat->Current_val1=FOC_M1_Current();
+    // sensor_dat->Current_val=FOC_M0_Current();
+    // sensor_dat->Current_val1=FOC_M1_Current();
 }
 
 
@@ -87,11 +87,23 @@ void Serial_Print_All_Data(SensorData *sensor_dat)
 {
 
 
+if(main_menu.mode==0)
+{
+    Serial.print("Data:");
+    Serial.print(Rad_to_Rpm(sensor_dat->Velocity_val));//L2
+    Serial.print(",");
+    Serial.print(Rad_to_Rpm(sensor_dat->Velocity_val1));//L3
+    Serial.print("\r\n");
+}
+
+
 if(main_menu.mode==3){
     Serial.print("Data:");
-    Serial.print(Rad_to_Angle(sensor_dat->Angle_val));//L0
+    Serial.print(sensor_dat->Angle_X);//L8
     Serial.print(",");
-    Serial.print(Rad_to_Angle(sensor_dat->Angle_val1));//L1
+    Serial.print(sensor_dat->Angle_Y);//L9
+    Serial.print(",");
+    Serial.print(sensor_dat->Angle_Z);//L10
     Serial.print("\r\n");
 }
 
@@ -104,6 +116,8 @@ if(main_menu.mode==1){
     Serial.print("\r\n");
 
 }
+
+
     // Serial.print(sensor_dat->Current_val);//L4
     // Serial.print(",");
     // Serial.print(sensor_dat->Current_val1);//L5
